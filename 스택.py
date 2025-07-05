@@ -25,35 +25,38 @@ print(A)
 print(B)
 
 # 스택 명령어 class 정의
-class steak_Manager :
+class stack_Manager :
     def __init__(self, steak_A, steak_B):
         self.steak_A = steak_A
         self.steak_B = steak_B
     
-    # 추가
-    def add():
-        element = []
-        element = list(map(int, input("추가할 원소 입력: ").split()))
-        print(element)
-        for i in range(len(element)):
-            if element[i] %2 == 0:
-                A.append(element[i])
-            else :
-                B.append(element[i])
-                
-        print(A)
-        print(B)
+    # 추가 (예외처리 완료)
+    def adds(self):
+        try :
+            element = []
+            element = list(map(int, input("추가할 원소 입력: ").split()))
+            print(element)
+            for i in range(len(element)):
+                if element[i] %2 == 0:
+                    A.append(element[i])
+                else :
+                    B.append(element[i])
+                    
+            print(A)
+            print(B)
+            
+        except ValueError :
+            print("정수만 입력하세요")
+            element = []
+            manager.adds()
         
-    # 삭제
-    def removes():
-        while True :
-            try:
-                prompt = list(input("제거할 스택과 수량 입력(예시 : A 4) : ").split())
-                length = len(prompt)
-                break
-            except length > 2:
-                print("잘못된 입력입니다ㅑ")
-                prompt = []
+    # 삭제 (예외처리 완료)
+    def removes(self):
+        prompt = list(input("제거할 스택과 수량 입력(예시 : A 4) : ").split())
+        if len(prompt) > 2 :
+            print("잘못된 입력입니다ㅑ")
+            return
+                
             
         print(prompt[0])
         print(prompt[1])
@@ -67,8 +70,8 @@ class steak_Manager :
         print(A)
         print(B)
         
-    # 수정(미완)
-    def correction ():
+    # 수정 (제작 미정)
+    def correction (self):
         while True:
             try : 
                 cor_element = int(input("수정할 원소 입력:"))
@@ -82,35 +85,45 @@ class steak_Manager :
             
             pass
         
-    # 출력
-    def prints ():
+    # 출력 (예외 필요X)
+    def prints (self):
         print(A)
         print(B)
         
-    # 종료
+    # 종료 (예외 필요X)
     def ends ():
         print("프로젝트를 종료합니다")
         exit()
 
 # 스택 명령어 대기
-manager = steak_Manager(A, B)
+manager = stack_Manager(A, B)
 
 # 스택 명령어 입력
 while True : 
     print("명령을 입력하세요")
-    other = input(" adds  removes  correction  prints  ends  ")
+    other = input(" adds  removes  prints  ends  ")
+    
     if other == "adds" :
-        steak_Manager.add()
+        stack_Manager.adds()
         other = None
+        
     elif other == "removes" :
-        steak_Manager.removes()
+        stack_Manager.removes()
         other = None
+        
+    # hiden
     elif other == "correction" :
-        steak_Manager.correction()
+        stack_Manager.correction()
         other = None
+        
     elif other == "ends" :
-        steak_Manager.ends()
+        stack_Manager.ends()
         other = None
+        
     elif other == "prints" :
-        steak_Manager.prints()
+        stack_Manager.prints()
         other = None
+        
+    else :
+        print("다시 입력해주세요")
+        continue
