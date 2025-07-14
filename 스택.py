@@ -1,129 +1,101 @@
-# 짝 홀 구분될 리스트 선언
-A = []
-B = []
+class StackManager:
+    def __init__(self, name):
+        self.name = name
+        self.odd = []
+        self.even = []
 
-# 스택 정수 원소들 리스트로 받기
-while True:
-    try:
-        stack = list(map(int, input("스택 정수 원소들 입력: ").split()))
-        print("입력된 스택:", stack)
-        break
-    
-    # 예외처리 (정수가 아님)
-    except ValueError:
-        print("잘못된 입력입니다. 정수만 입력해주세요.")
-        stack = []
-
-# 원소들의 짝 홀 구분으로 스택 A, B 나누기
-for i in range(len(stack)):
-    if stack[i] %2 == 0:
-        A.append(stack[i])
-    else :
-        B.append(stack[i])
-        
-print(A)
-print(B)
-
-# 스택 명령어 class 정의
-class stack_Manager :
-    def __init__(self, steak_A, steak_B):
-        self.steak_A = steak_A
-        self.steak_B = steak_B
-    
     # 추가 (예외처리 완료)
     def adds(self):
-        try :
-            element = []
-            element = list(map(int, input("추가할 원소 입력: ").split()))
-            print(element)
-            for i in range(len(element)):
-                if element[i] %2 == 0:
-                    A.append(element[i])
-                else :
-                    B.append(element[i])
-                    
-            print(A)
-            print(B)
-            
-        except ValueError :
+        try:
+            add_element = list(map(int, input("추가할 원소 입력: ").split()))
+            for num in add_element:
+                if num % 2 == 0:
+                    self.even.append(num)
+                else:
+                    self.odd.append(num)
+            print("현재 짝수 스택:", self.even)
+            print("현재 홀수 스택:", self.odd)
+        except ValueError:
             print("정수만 입력하세요")
-            element = []
-            manager.adds()
-        
+            self.adds()
+
     # 삭제 (예외처리 완료)
     def removes(self):
-        prompt = list(input("제거할 스택과 수량 입력(예시 : A 4) : ").split())
-        if len(prompt) > 2 :
-            print("잘못된 입력입니다ㅑ")
+        remove_element = input("제거할 스택과 수량 입력(예시: even 4): ").split()
+        if len(remove_element) != 2 or remove_element[0] not in ["even", "odd"]:
+            print("잘못된 입력입니다")
             return
-                
-            
-        print(prompt[0])
-        print(prompt[1])
-        
-        count = int(prompt[1])
-        if prompt[0] == "A" :
-            del A[-count:]
-            
-        elif prompt[0] == "B" :
-            del B[-count:]
-        print(A)
-        print(B)
-        
-    # 수정 (제작 미정)
-    def correction (self):
-        while True:
-            try : 
-                cor_element = int(input("수정할 원소 입력:"))
-                print("입력한 원소 : " , cor_element)
-                break
-            except ValueError:
-                print("정수를 입력해주세요")
-                cor_element = None
-                
-        if cor_element in A:
-            
-            pass
-        
-    # 출력 (예외 필요X)
-    def prints (self):
-        print(A)
-        print(B)
-        
-    # 종료 (예외 필요X)
-    def ends ():
-        print("프로젝트를 종료합니다")
+        try:
+            count = int(remove_element[1])
+        except ValueError:
+            print("수량은 정수로 입력하세요")
+            return
+        if remove_element[0] == "even":
+            del self.even[-count:]
+        else:
+            del self.odd[-count:]
+        print("현재 짝수 스택:", self.even)
+        print("현재 홀수 스택:", self.odd)
+
+    # 출력
+    def prints(self):
+        print("짝수 스택:", self.even)
+        print("홀수 스택:", self.odd)
+
+    # 종료
+    def ends(self):
+        print("프로그램을 종료합니다.")
         exit()
 
-# 스택 명령어 대기
-manager = stack_Manager(A, B)
+# 스택 저장할 딕셔너리
+stack_dict = {}
 
-# 스택 명령어 입력
-while True : 
+while True:
     print("명령을 입력하세요")
-    other = input(" adds  removes  prints  ends  ")
+    print("예시: name adds / new name / name removes / name prints / ends")
+    command = input(">>> ").split()
     
-    if other == "adds" :
-        stack_Manager.adds()
-        other = None
-        
-    elif other == "removes" :
-        stack_Manager.removes()
-        other = None
-        
-    # hiden
-    elif other == "correction" :
-        stack_Manager.correction()
-        other = None
-        
-    elif other == "ends" :
-        stack_Manager.ends()
-        other = None
-        
-    elif other == "prints" :
-        stack_Manager.prints()
-        other = None
-        
-    else :
-        print("다시 입력해주세요")
+    if not command:
         continue
+
+    if command[0] == "new":
+        if len(command) < 2:
+            print("스택 이름을 입력하세요.")
+            continue
+        name = command[1]
+        if name in stack_dict:
+            print(f"이미 '{name}' 스택이 존재합니다.")
+        else:
+            stack_dict[name] = StackManager(name)
+            print(f"'{name}' 스택이 생성되었습니다.")
+
+    elif command[0] == "ends":
+        print("프로그램을 종료합니다.")
+        break
+
+    elif command[0] == "list":
+        if not stack_dict:
+            print("아직 생성된 스택이 없습니다.")
+        else:
+            print("현재 생성된 스택들:", ", ".join(stack_dict.keys()))
+
+    elif len(command) >= 2:
+        name = command[0]
+        action = command[1]
+
+        if name not in stack_dict:
+            print(f"스택 '{name}' 이 존재하지 않습니다.")
+            continue
+
+        stack = stack_dict[name]
+
+        if action == "adds":
+            stack.adds()
+        elif action == "removes":
+            stack.removes()
+        elif action == "prints":
+            stack.prints()
+        else:
+            print("지원되지 않는 명령입니다.")
+    else:
+        print("잘못된 명령입니다. 다시 시도해주세요.")
